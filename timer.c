@@ -9,7 +9,7 @@ static void timer_callback(registers_t regs)
 
 void init_timer(u32int frequency) 
 {
-    // Registrujemo timer_callback da bi radili interrupti
+    // Register timer_callback that allows interrupt usage.
     register_interrupt_handler(IRQ0, &timer_callback);
 
     // The value we send to the PIT is the value to divide it's input clock
