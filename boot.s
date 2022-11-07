@@ -29,7 +29,7 @@ global start:function (start.end - start)
 extern main
 start:
 	mov esp, stack_top
-	cli
+	cli ; clear interrupt enable in eflags
 	call main
 	jmp $
 .hang:  hlt
@@ -38,5 +38,5 @@ start:
 
 global hang
 hang:
-	hlt
+	hlt ; halt instruction
 	jmp hang
