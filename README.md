@@ -149,8 +149,6 @@ mv grub.cfg isodir/boot/grub/grub.cfg
 grub-mkrescue -o KernelXO.iso isodir
 ```
 
-> **Note**: You can skip these steps and just use the iso image provided in this project, however you will use these instructions when creating your own kernel.
-
 ### OS testing
 <p align="justify">After installing QEMU use the following command to start the <i>KernelXO.iso</i>:</p>
 
