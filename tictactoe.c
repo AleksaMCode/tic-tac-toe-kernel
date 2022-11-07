@@ -118,7 +118,7 @@ int getComputerRandomMove(const int *board)
 }
 
 // Tic-tac-toe playing AI. Exhaustive tree-search. WTFPL
-// Matthew Steel 2009, www.www.repsilat.com
+// Matthew Steel 2009, www.repsilat.com
 int win(const int *board) 
 {
     // Determines if a player has won, returns 0 otherwise.
@@ -336,7 +336,7 @@ void gameInterrupt()
                 monitor_write("\nNumber of draws: ");
                 monitor_write_dec(tic_tac_toe.totalDraws);
                 monitor_write("\n");
-                // IMPLEMENT SHUTTING DOWN
+                // TODO: IMPLEMENT SHUTTING DOWN
                 turnOffAll();
             } 
             else 
