@@ -138,7 +138,7 @@ Like the GDT the IDT is an array of 8-byte descriptors. Unlike the GDT the first
 ### Building a bootable image
 <p align="justify">You can create a bootable image containing the GRUB bootloader and your kernel using the program <b>grub-mkrescue</b>. First you neet to create a file called <i>grub.cfg</i> that contains:</p>
 
-https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/1e8b7d2d27b90c7e5071ad87321d6a52f6cd4ce5/isodir/boot/grub/grub.cfg#L1-L3
+https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/fa3cc16c0fd0dc2eacca4c8ec3dbe6a2ac680586/isodir/boot/grub/grub.cfg#L1-L3
 
 <p align="justify">To create a bootable image type in the following commands:</p>
 
@@ -146,7 +146,7 @@ https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/1e8b7d2d27b90c7e5071ad873
 mkdir -p isodir/boot/grub
 mv kernel.bin isodir/boot/kernel.bin
 mv grub.cfg isodir/boot/grub/grub.cfg
-grub-mkrescue -o kernel.iso isodir
+grub-mkrescue -o Kernel.iso isodir
 ```
 
 ### OS testing
