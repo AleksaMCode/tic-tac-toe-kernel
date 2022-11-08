@@ -144,16 +144,16 @@ https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/1e8b7d2d27b90c7e5071ad873
 
 ```bash
 mkdir -p isodir/boot/grub
-mv kernel.bin isodir/boot/KernelXO.bin
+mv kernel.bin isodir/boot/kernel.bin
 mv grub.cfg isodir/boot/grub/grub.cfg
-grub-mkrescue -o KernelXO.iso isodir
+grub-mkrescue -o kernel.iso isodir
 ```
 
 ### OS testing
 <p align="justify">After installing QEMU use the following command to start the <i>KernelXO.iso</i>:</p>
 
 ```bash
-qemu-system-x86_64 -cdrom KernelXO.iso
+qemu-system-x86_64 -cdrom kernel.iso
 ```
 
 ## References
