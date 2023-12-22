@@ -1,7 +1,7 @@
 <img width="150" align="right" title="cpu icon" src="./resources/tic-tac-toe.png" alt_text="[Tic Tac Toe icons created by Freepik - Flaticon](https://www.flaticon.com/premium-icon/tic-tac-toe_3401145)"></img>
 
 # Tic Tac Toe Kernel
-<p align="justify"><b>Tic Tac Toe Kernel</b> is a project I created with Luka Budrak (<a href="https://github.com/Valyreon">@Valyreon</a>) in June of 2020, that has helped us gain better understanding of Kernel development. For some reason I never got around to opensourcing this project, <i>but there's no time like the present</i>.</p>
+<p align="justify"><b>Tic Tac Toe Kernel</b> is a project I created with <a href="https://github.com/Valyreon">Valyreon</a> in June of 2020, that has helped us gain better understanding of Kernel development. For some reason, I never got around to open-sourcing this project, <i>but there's no time like the present</i>.</p>
 
 ## Table of contents
 - [Tic Tac Toe Kernel](#tic-tac-toe-kernel)
@@ -25,7 +25,7 @@
   - [To-Do List](#to-do-list)
 
 ## Introduction
-<p align="justify"><img src="./resources/monolithic.png" width="200" title="Basic overview of a monolithic kernel." align="left" hspace="2" vspace="2">The idea behind this project was to develop a simple, beginner-friendly, UNIX-clone operating system for the x86 architecture. The created OS is <a href="https://en.wikipedia.org/wiki/Monolithic_kernel">monolithic</a> as this was the path of the least resistance while programming. Because of the aforementioned reasons, this is a very simple kernel because the used algorithms are not optimal or uttermost space efficient. The goal with this project was to gain basic knowledge on the kernel development and not to write the most efficient kernel possible. By writing this a hope I will inspire someone to write their own kernel. Because of the extensible nature of this kernel, you could use the provided code and easly build you kernel on top of this one.</p>
+<p align="justify"><img src="./resources/monolithic.png" width="200" title="Basic overview of a monolithic kernel." align="left" hspace="2" vspace="2">The idea behind this project was to develop a simple, beginner-friendly, UNIX-clone operating system for the x86 architecture. The created OS is <a href="https://en.wikipedia.org/wiki/Monolithic_kernel">monolithic</a> as this was the path of the least resistance while programming. Because of the aforementioned reasons, this is a very simple kernel because the used algorithms are not optimal or uttermost space efficient. The goal with this project was to gain basic knowledge on the kernel development and not to write the most efficient kernel possible. By writing this, a hope I will inspire someone to write their own kernel. Because of the extensible nature of this kernel, you could use the provided code and easily build your kernel on top of this one.</p>
 
 
 > **Note**:
@@ -33,30 +33,29 @@
 > <li>The provided code contains a lot of comments, so if something isn't explained in README it is probably explained in the source code.</li>
 
 ## Requirements
-<p align="justify">To compile and run this code you will need Linux, <a href="https://www.nasm.us/">GCC</a>, LD, GNU MAKE, <a href="https://www.nasm.us/">NASM</a> and <a href="https://www.google.com/search?client=firefox-b-d&q=QEMU">QEMU</a>. In order to fully understand everything that is written in this project you will need to have a very good knowledge of C and a pretty good understanding of <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjitorE8Zz7AhXOxQIHHQ_RDHAQFnoECA4QAQ&url=https%3A%2F%2Fwww.intel.com%2Fcontent%2Fdam%2Fdevelop%2Fexternal%2Fus%2Fen%2Fdocuments%2Fintroduction-to-x64-assembly-181178.pdf&usg=AOvVaw2-KElAcG1rRPsv5rHn3UMw">assembly</a> (Intel syntax) as well as some basic knowledge of registers. Knowledge of Linux will be very helpful as the scripts and tutorial is tailor for it.</p>
+<p align="justify">To compile and run this code you will need Linux, <a href="https://www.nasm.us/">GCC</a>, LD, GNU MAKE, <a href="https://www.nasm.us/">NASM</a> and <a href="https://www.google.com/search?client=firefox-b-d&q=QEMU">QEMU</a>. In order to fully understand everything that is written in this project, you will need to have a very good knowledge of C and a pretty good understanding of <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjitorE8Zz7AhXOxQIHHQ_RDHAQFnoECA4QAQ&url=https%3A%2F%2Fwww.intel.com%2Fcontent%2Fdam%2Fdevelop%2Fexternal%2Fus%2Fen%2Fdocuments%2Fintroduction-to-x64-assembly-181178.pdf&usg=AOvVaw2-KElAcG1rRPsv5rHn3UMw">assembly</a> (Intel syntax) as well as some basic knowledge of registers. Knowledge of Linux will be very helpful as the scripts and tutorial is tailor for it.</p>
 
 ## Link file
-<p align="justify">This file tells LD (GNU Linker) how to set up our kernel image. For more information about the LD check out this <a href="https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html">link</a>. Firstly it tells that the start location of our binary should be the symbol <i>start</i>. The <b><a href="https://en.wikipedia.org/wiki/Code_segment">.text</a></b> section, the place where our code goes, should be first and should start at 0x100000 or 1 MB. The <b><a href="https://en.wikipedia.org/wiki/Data_segment">.data</a></b> section should be next, followed by the <b><a href="https://en.wikipedia.org/wiki/.bss">.bss</a></b> section while each should be page-aligned with <code>ALIGN(4K)</code>.</p>
+<p align="justify">This file tells LD (GNU Linker) how to set up our kernel image. For more information about the LD check out this <a href="https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html">link</a>. Firstly, it tells that the start location of our binary should be the symbol <i>start</i>. The <b><a href="https://en.wikipedia.org/wiki/Code_segment">.text</a></b> section, the place where our code goes, should be first and should start at 0x100000 or 1 MB. The <b><a href="https://en.wikipedia.org/wiki/Data_segment">.data</a></b> section should be next, followed by the <b><a href="https://en.wikipedia.org/wiki/.bss">.bss</a></b> section, while each should be page-aligned with <code>ALIGN(4K)</code>.</p>
 
-> **Note**: The linker script specifies *start* as the entry point to the kernel and the
-bootloader will jump to this position once the kernel has been loaded.
+> **Note**: The linker script specifies *start* as the entry point to the kernel and the bootloader will jump to this position once the kernel has been loaded.
 
 ## Boot code
-<p align="justify">To start you OS we will an existing piece of software to load it. This is called <a href="https://en.wikipedia.org/wiki/Bootloader">bootloader</a> and we have used <a href="https://www.gnu.org/software/grub/">GRUB</a> as goal of this project wasn't to develop our own bootloader. Unless you really want to develop a bootloader, I recommend using one of the already available bootloaders. The <i>boot.s</i> is a Kernel start location which also defines multiboot header. Multiboot Standard describes an interface between the bootloader and the OS kernel so we don't have to worry about that. It works by putting some magic values in some global variables inside of the multiboot header.</p>
+<p align="justify">To start your OS we will an existing piece of software to load it. This is called <a href="https://en.wikipedia.org/wiki/Bootloader">bootloader</a> and we have used <a href="https://www.gnu.org/software/grub/">GRUB</a> as the goal of this project wasn't to develop our own bootloader. Unless you really want to develop a bootloader, I recommend using one of the already available bootloaders. The <i>boot.s</i> is a Kernel start location which also defines multiboot header. Multiboot Standard describes an interface between the bootloader and the OS kernel, so we don't have to worry about that. It works by putting some magic values in some global variables inside the multiboot header.</p>
 
 https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/1e8b7d2d27b90c7e5071ad87321d6a52f6cd4ce5/boot.s#L10-L14
 
-<p align="justify">When the bootloader sees these values, it recognizes the kernel as multiboot compatible and it knows how to load us, and it can even forward us important information. Since there is no stack yet we need to make sure the global variables are set correctly.</p>
+<p align="justify">When the bootloader sees these values, it recognizes the kernel as multiboot compatible, and it knows how to load us, and it can even forward us important information. Since there is no stack yet, we need to make sure the global variables are set correctly.</p>
 
 https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/1e8b7d2d27b90c7e5071ad87321d6a52f6cd4ce5/boot.s#L2-L6
 
-<p align="justify">The Multiboot Standard doesn't define the value of the stack pointer register ESP and it is up to kernel to provide a stack. We allocate room for a small stack by creating a symbol at the bottom of it (<code>stack_bottom</code>), allocating x amount of bytes and finally creating a symbol at the top (<code>stack_top</code>).</p>
+<p align="justify">The Multiboot Standard doesn't define the value of the stack pointer register ESP, and it is up to the kernel to provide a stack. We allocate room for a small stack by creating a symbol at the bottom of it (<code>stack_bottom</code>), allocating x amount of bytes and finally creating a symbol at the top (<code>stack_top</code>).</p>
 
 ```asm
 mov esp, stack_top
 ```
 
-<p align="justify">To set up a stack, we set the ESP register to point to the top of the stack. This is very important as program written in C cannont function without a stack. After which we put the computer into an infinite loop. We achieve this by:</p>
+<p align="justify">To set up a stack, we set the ESP register to point to the top of the stack. This is very important, as a program written in C cannot function without a stack. After which we put the computer into an infinite loop. We achieve this by:</p>
 <ol>
 <li>Disabling interrupts with <b>cli</b> (clear interrupt enable in eflags).</li>
 <li>Waiting for the next interrupt to arrive with <b>hlt</b>.</li>
@@ -70,17 +69,17 @@ mov esp, stack_top
 > <li><b>CHECKSUM</b> field is defined such that when the magic number, the flags and this are added together, the total must be zero. It is for error checking.</li></ul>
 
 ## Global Functions
-<p align="justify">We have defined few commonly-used global functions inside of the <i>common.c</i> and <i>common.h</i>. They contain function for writing to and reading from the I/O bus, strcmp, strcpy and strcat functions.
+<p align="justify">We have defined few commonly-used global functions inside the <i>common.c</i> and <i>common.h</i>. They contain function for writing to and reading from the I/O bus, strcmp, strcpy and strcat functions.
 
 ## Monitor code
 ### Moving the cursor
-<p align="justify">First we calcualte linear offset of the x, y cursor coordinate after which we send this offset to the VGA controller that accepts the 16-bit location as two bytes.</p>
+<p align="justify">First we calculate a linear offset of the $(x,y)$ cursor coordinate, after which we send this offset to the VGA controller that accepts the 16-bit location as two bytes.</p>
 
 ## GDT and IDT
 <p align="justify">The GDT and the IDT are descriptor tables. They are arrays of flags and bit values describing the operation of either the segmentation system (in the case of the GDT), or the interrupt vector table (IDT).</p>
 
 ### The Global Descriptor Table
-<p align="justify">The Global Descriptor Table (GDT) is a table in memory that defines the processor's memory segments. The GDT sets the behavior of the segment registers and helps to ensure that protected mode operates smoothly. Segmentation is built into the x86 architecture and it's impossible to get around it. With segmentation, every memory access is evaluated with respect to a segment. That is, the memory address is added to the segment's base address, and checked against the segment's length. The GDT is pointed to by a special register in the x86 chip, the GDT Register, or simply the GDTR. The GDTR is 48 bits long. The lower 16 bits tell the size of the GDT, and the upper 32 bits tell the location of the GDT in memory.
+<p align="justify">The Global Descriptor Table (GDT) is a table in memory that defines the processor's memory segments. The GDT sets the behavior of the segment registers and helps to ensure that protected mode operates smoothly. Segmentation is built into the x86 architecture, and it's impossible to get around it. With segmentation, every memory access is evaluated with respect to a segment. That is, the memory address is added to the segment's base address, and checked against the segment's length. The GDT is pointed to by a special register in the x86 chip, the GDT Register, or simply the GDTR. The GDTR is 48 bits long. The lower 16 bits tell the size of the GDT, and the upper 32 bits tell the location of the GDT in memory.
 
 https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/1e8b7d2d27b90c7e5071ad87321d6a52f6cd4ce5/gdt.s#L3-L15
 
@@ -136,11 +135,11 @@ Like the GDT the IDT is an array of 8-byte descriptors. Unlike the GDT the first
 
 ## Booting the kernel
 ### Building a bootable image
-<p align="justify">You can create a bootable image containing the GRUB bootloader and your kernel using the program <b>grub-mkrescue</b>. First you neet to create a file called <i>grub.cfg</i> that contains:</p>
+<p align="justify">You can create a bootable image containing the GRUB bootloader and your kernel using the program <b>grub-mkrescue</b>. First, you need to create a file called <i>grub.cfg</i> that contains:</p>
 
 https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/fa3cc16c0fd0dc2eacca4c8ec3dbe6a2ac680586/isodir/boot/grub/grub.cfg#L1-L3
 
-<p align="justify">To create a bootable image type in the following commands:</p>
+<p align="justify">To create a bootable image, type in the following commands:</p>
 
 ```bash
 mkdir -p isodir/boot/grub
