@@ -1,46 +1,68 @@
 <img width="150" align="right" title="cpu icon" src="./resources/tic-tac-toe.png" alt_text="[Tic Tac Toe icons created by Freepik - Flaticon](https://www.flaticon.com/premium-icon/tic-tac-toe_3401145)"></img>
 
 # Tic Tac Toe Kernel
-<p align="justify"><b>Tic Tac Toe Kernel</b> is a project I created with <a href="https://github.com/Valyreon">Valyreon</a> in June of 2020, that has helped us gain better understanding of Kernel development. For some reason, I never got around to open-sourcing this project, <i>but there's no time like the present</i>.</p>
+![](https://img.shields.io/github/v/release/AleksaMCode/tic-tac-toe-kernel)
+
+<p align="justify"><b>Tic Tac Toe Kernel</b> is a project I created with <a href="https://github.com/Valyreon">Valyreon</a> in June of 2018, that has helped us gain better understanding of Kernel development. It provides users with an opportunity to engage in a game of Tic Tac Toe against the Kernel at two different difficulty levels: easy and hard. At the hard level, the Kernel is impossible to beat, making the best case scenario a draw game, while the easy level is made in such a way that the Kernel is playing the first free board space, thus making it easy to gain a win over the Kernel.</p>
+
+<p align="center">
+<img
+src="./resources/kernelxo.gif?raw=true"
+alt="PNLS system overview"
+width="70%"
+class="center"
+/>
+<p align="center">
+    <label><b>Tic Tac Toe Kernel</b> <i>easy</i> gameplay running on Oracle VM VirtualBox</label>
+</p>
+</p>
 
 ## Table of contents
 - [Tic Tac Toe Kernel](#tic-tac-toe-kernel)
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Requirements](#requirements)
-  - [Link file](#link-file)
-  - [Boot code](#boot-code)
-  - [Global Functions](#global-functions)
-  - [Monitor code](#monitor-code)
-    - [Moving the cursor](#moving-the-cursor)
-  - [GDT and IDT](#gdt-and-idt)
-    - [The Global Descriptor Table](#the-global-descriptor-table)
-    - [The Interrupt Descriptor Table](#the-interrupt-descriptor-table)
-  - [Booting the kernel](#booting-the-kernel)
-    - [Building a bootable image](#building-a-bootable-image)
+  - [Tic Tac Toe Gameplay](#tic-tac-toe-gameplay)
+  - [Kernel](#kernel)
+    - [Link file](#link-file)
+    - [Boot code](#boot-code)
+    - [Global Functions](#global-functions)
+    - [Monitor code](#monitor-code)
+      - [Moving the cursor](#moving-the-cursor)
+    - [GDT and IDT](#gdt-and-idt)
+      - [The Global Descriptor Table](#the-global-descriptor-table)
+      - [The Interrupt Descriptor Table](#the-interrupt-descriptor-table)
+    - [Booting the kernel](#booting-the-kernel)
+      - [Build a binary file](#build-a-binary-file)
+      - [Building a bootable image](#building-a-bootable-image)
     - [OS testing](#os-testing)
   - [References](#references)
     - [Books](#books)
     - [Links](#links)
+  - [Screenshots](#screenshots)
   - [To-Do List](#to-do-list)
 
 ## Introduction
 <p align="justify"><img src="./resources/monolithic.png" width="200" title="Basic overview of a monolithic kernel." align="left" hspace="2" vspace="2">The idea behind this project was to develop a simple, beginner-friendly, UNIX-clone operating system for the x86 architecture. The created OS is <a href="https://en.wikipedia.org/wiki/Monolithic_kernel">monolithic</a> as this was the path of the least resistance while programming. Because of the aforementioned reasons, this is a very simple kernel because the used algorithms are not optimal or uttermost space efficient. The goal with this project was to gain basic knowledge on the kernel development and not to write the most efficient kernel possible. By writing this, a hope I will inspire someone to write their own kernel. Because of the extensible nature of this kernel, you could use the provided code and easily build your kernel on top of this one.</p>
 
 
-> **Note**:
-> <ul><li>The first part of this README will focus on the explanation of the kernel development, while the second part will focus on the Tic Tac Toe game and the <a href="https://en.wikipedia.org/wiki/Decision_tree">Decision Tree</a>.</li>
-> <li>The provided code contains a lot of comments, so if something isn't explained in README it is probably explained in the source code.</li>
+> [!NOTE]
+> - <p align="justify">The first part of this README will focus on the explanation of the kernel development, while the second part will focus on the Tic Tac Toe game and the <a href="https://en.wikipedia.org/wiki/Decision_tree">Decision Tree</a>.</p>
+> - <p align="justify">The provided code contains a lot of comments, so if something isn't explained in README it is probably explained in the source code.</p>
 
 ## Requirements
 <p align="justify">To compile and run this code you will need Linux, <a href="https://www.nasm.us/">GCC</a>, LD, GNU MAKE, <a href="https://www.nasm.us/">NASM</a> and <a href="https://www.google.com/search?client=firefox-b-d&q=QEMU">QEMU</a>. In order to fully understand everything that is written in this project, you will need to have a very good knowledge of C and a pretty good understanding of <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjitorE8Zz7AhXOxQIHHQ_RDHAQFnoECA4QAQ&url=https%3A%2F%2Fwww.intel.com%2Fcontent%2Fdam%2Fdevelop%2Fexternal%2Fus%2Fen%2Fdocuments%2Fintroduction-to-x64-assembly-181178.pdf&usg=AOvVaw2-KElAcG1rRPsv5rHn3UMw">assembly</a> (Intel syntax) as well as some basic knowledge of registers. Knowledge of Linux will be very helpful as the scripts and tutorial is tailor for it.</p>
 
-## Link file
+## Tic Tac Toe Gameplay
+...
+
+## Kernel
+### Link file
 <p align="justify">This file tells LD (GNU Linker) how to set up our kernel image. For more information about the LD check out this <a href="https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html">link</a>. Firstly, it tells that the start location of our binary should be the symbol <i>start</i>. The <b><a href="https://en.wikipedia.org/wiki/Code_segment">.text</a></b> section, the place where our code goes, should be first and should start at 0x100000 or 1 MB. The <b><a href="https://en.wikipedia.org/wiki/Data_segment">.data</a></b> section should be next, followed by the <b><a href="https://en.wikipedia.org/wiki/.bss">.bss</a></b> section, while each should be page-aligned with <code>ALIGN(4K)</code>.</p>
 
 > **Note**: The linker script specifies *start* as the entry point to the kernel and the bootloader will jump to this position once the kernel has been loaded.
 
-## Boot code
+### Boot code
 <p align="justify">To start your OS we will an existing piece of software to load it. This is called <a href="https://en.wikipedia.org/wiki/Bootloader">bootloader</a> and we have used <a href="https://www.gnu.org/software/grub/">GRUB</a> as the goal of this project wasn't to develop our own bootloader. Unless you really want to develop a bootloader, I recommend using one of the already available bootloaders. The <i>boot.s</i> is a Kernel start location which also defines multiboot header. Multiboot Standard describes an interface between the bootloader and the OS kernel, so we don't have to worry about that. It works by putting some magic values in some global variables inside the multiboot header.</p>
 
 https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/1e8b7d2d27b90c7e5071ad87321d6a52f6cd4ce5/boot.s#L10-L14
@@ -62,23 +84,23 @@ mov esp, stack_top
 <li>Jumping to the <b>hlt</b> instruction if it ever wakes up due to a non-maskable interrupt occurring or due to system management mode.</li>
 </ol>
 
-> **Note**:
-> <ul><li>The stack on x86 must be 16-byte aligned.</li>
-> <li>The stack grows downwards on x86.</li>
-> <li>The compiler will assume the stack is properly aligned and failure to align the stack will result in undefined behavior.</li>
-> <li><b>CHECKSUM</b> field is defined such that when the magic number, the flags and this are added together, the total must be zero. It is for error checking.</li></ul>
+> [!WARNING]
+> - <p align="justify">The stack on x86 must be 16-byte aligned.</p>
+> - <p align="justify">The stack grows downwards on x86.</p>
+> - <p align="justify">The compiler will assume the stack is properly aligned and failure to align the stack will result in undefined behavior.</p>
+> - <p align="justify"><b>CHECKSUM</b> field is defined such that when the magic number, the flags and this are added together, the total must be zero. It is for error checking.</p>
 
-## Global Functions
+### Global Functions
 <p align="justify">We have defined few commonly-used global functions inside the <i>common.c</i> and <i>common.h</i>. They contain function for writing to and reading from the I/O bus, strcmp, strcpy and strcat functions.
 
-## Monitor code
-### Moving the cursor
+### Monitor code
+#### Moving the cursor
 <p align="justify">First we calculate a linear offset of the $(x,y)$ cursor coordinate, after which we send this offset to the VGA controller that accepts the 16-bit location as two bytes.</p>
 
-## GDT and IDT
+### GDT and IDT
 <p align="justify">The GDT and the IDT are descriptor tables. They are arrays of flags and bit values describing the operation of either the segmentation system (in the case of the GDT), or the interrupt vector table (IDT).</p>
 
-### The Global Descriptor Table
+#### The Global Descriptor Table
 <p align="justify">The Global Descriptor Table (GDT) is a table in memory that defines the processor's memory segments. The GDT sets the behavior of the segment registers and helps to ensure that protected mode operates smoothly. Segmentation is built into the x86 architecture, and it's impossible to get around it. With segmentation, every memory access is evaluated with respect to a segment. That is, the memory address is added to the segment's base address, and checked against the segment's length. The GDT is pointed to by a special register in the x86 chip, the GDT Register, or simply the GDTR. The GDTR is 48 bits long. The lower 16 bits tell the size of the GDT, and the upper 32 bits tell the location of the GDT in memory.
 
 https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/1e8b7d2d27b90c7e5071ad87321d6a52f6cd4ce5/gdt.s#L3-L15
@@ -87,7 +109,7 @@ Keep in mind that the GRUB sets a GDT up for you. The problem is that you don't 
 
 https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/1e8b7d2d27b90c7e5071ad87321d6a52f6cd4ce5/include/descriptor_tables.h#L9-L17
 
-### The Interrupt Descriptor Table
+#### The Interrupt Descriptor Table
 <p align="justify">The Interrupt Descriptor Table (IDT) is a data structure used by the x86 architecture to implement an interrupt vector table. The IDT is used by the processor to determine the correct response to interrupts and exceptions.
 
 Three general interrupt and exceptions sources:
@@ -103,8 +125,6 @@ Types of Exceptions:
   <li>Traps - are precise exceptions reported on the boundary following the instruction causing the exception.</li>
   <li>Aborts - are imprecise exceptions. Because they are imprecise, aborts typically do not allow reliable program restart.</li>
 </ul>
-
-
 
 Like the GDT the IDT is an array of 8-byte descriptors. Unlike the GDT the first entry of the IDT may contain a descriptor. It is just an array of entries, each one corresponding to an interrupt number. There are 256 possible interrupt numbers, so 256 must be defined. If an interrupt occurs and there is no entry for it (even a NULL entry is fine), the processor will panic and reset. The processor will sometimes need to signal your kernel. Something major may have happened, such as a divide-by-zero, or a page fault. To do this, it uses the first 32 interrupts. The special CPU-dedicated interrupts are shown below. </p>
 
@@ -133,27 +153,35 @@ Like the GDT the IDT is an array of 8-byte descriptors. Unlike the GDT the first
 
 </p>
 
-## Booting the kernel
-### Building a bootable image
-<p align="justify">You can create a bootable image containing the GRUB bootloader and your kernel using the program <b>grub-mkrescue</b>. First, you need to create a file called <i>grub.cfg</i> that contains:</p>
+### Booting the kernel
+<p align="justify">If you don't want to build your own bootable image, download the latest <a href="https://github.com/AleksaMCode/tic-tac-toe-kernel/releases">release</a> of the Kernel and head over to <a href="#os-testing">OS testing section</a>.</p>
 
-https://github.com/AleksaMCode/tic-tac-toe-kernel/blob/fa3cc16c0fd0dc2eacca4c8ec3dbe6a2ac680586/isodir/boot/grub/grub.cfg#L1-L3
-
-<p align="justify">To create a bootable image, type in the following commands:</p>
+#### Build a binary file
+<p align="justify">Move the <code>build.sh</code> file to a <code>src/</code> directory and then simply run the build script as:</p>
 
 ```bash
-mkdir -p isodir/boot/grub
+sh ./src/build.sh
+```
+This will produce a binary file `kernel.bin`.
+
+#### Building a bootable image
+<p align="justify">You can create a bootable image containing the <a href="https://www.gnu.org/software/grub/">GRUB bootloader</a> and your kernel using the program <a href="https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dmkrescue.html"><b>grub-mkrescue</b></a>.</p>
+
+<p align="justify">To create a bootable image, run in the following commands:</p>
+
+```bash
 mv kernel.bin isodir/boot/kernel.bin
-mv grub.cfg isodir/boot/grub/grub.cfg
-grub-mkrescue -o Kernel.iso isodir
+grub-mkrescue -o KernelXO.iso isodir
 ```
 
 ### OS testing
 <p align="justify">After installing QEMU use the following command to start the <i>KernelXO.iso</i>:</p>
 
 ```bash
-qemu-system-x86_64 -cdrom kernel.iso
+qemu-system-x86_64 -cdrom KernelXO.iso
 ```
+
+Alternatively, you could mount the ISO image to a Virtual Machine.
 
 ## References
 ### Books
@@ -167,8 +195,24 @@ qemu-system-x86_64 -cdrom kernel.iso
   <li><p align="justify"><a href="https://wiki.osdev.org/Main_Page">osdev.org wiki</a></p></li>
   <li><p align="justify"><a href="https://0xax.gitbooks.io/linux-insides/content/KernelStructures/linux-kernelstructure-1.html">Kernel Structures</a></p></li>
   <li><p align="justify"><a href="https://en.wikibooks.org/wiki/X86_Assembly/X86_Architecture">x86 Assembly/X86 Architecture</a></p></li>
+  <li><p align="justify"><a href="https://www.youtube.com/watch?v=nnL_Lv19hdw">OSDev.org Tutorial: Build an i686-elf Cross Compiler under 64-bit Ubuntu Desktop 16.04.1 </a></p></li>
+
 </ul>
 
+## Screenshots
+
+Here are some kernel screenshots:
+
+|   |   |
+:-------------------------:|:-------------------------:
+![](/resources/screenshot_1.jpg?raw=true)  |  ![](/resources/screenshot_2.jpg?raw=true)
+![](/resources/screenshot_3.jpg?raw=true)  |  ![](/resources/screenshot_4.jpg?raw=true)
+<p align="center">
+    <label><b>Tic Tac Toe Kernel</b> running using QEMU</label>
+</p>
+
 ## To-Do List
-- [ ] Complete README.md
-- [ ] Implement Shutdown
+- [ ] Complete the `README.md`
+- [ ] Implement shutdown
+- [ ] Implement score restart
+- [ ] Implement gameplay restart
