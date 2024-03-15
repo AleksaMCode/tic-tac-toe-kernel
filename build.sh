@@ -1,3 +1,4 @@
+#!/bin/bash
 echo Building kernel...
 
 nasm -felf32 boot.s -o boot.o
