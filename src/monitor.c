@@ -152,8 +152,9 @@ void monitor_write_dec(u32int n) {
 
 void monitor_write_valn(char c, int n) {
   int i;
-  for (i = 0; i < n; i++)
+  for (i = 0; i < n; i++) {
     monitor_put(c);
+  }
 }
 
 char *get_current_line() {

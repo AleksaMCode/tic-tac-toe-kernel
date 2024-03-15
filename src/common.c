@@ -22,14 +22,16 @@ u16int inw(u16int port) {
 }
 
 void memcpy(u8int *dest, const u8int *src, u32int len) {
-  for (; len != 0; len--)
+  for (; len != 0; len--) {
     *dest++ = *src++;
+  }
 }
 
 void memset(u8int *dest, u8int val, u32int len) {
   u8int *temp = dest;
-  for (; len != 0; len--)
+  for (; len != 0; len--) {
     *temp++ = val;
+  }
 }
 
 // Compare two strings. Should return -1 if
@@ -46,8 +48,9 @@ int strcmp(char *str1, char *str2) {
   }
   // why did the loop exit?
   if ((str1[i] == '\0' && str2[i] != '\0') ||
-      (str1[i] != '\0' && str2[i] == '\0'))
+      (str1[i] != '\0' && str2[i] == '\0')) {
     failed = 1;
+  }
 
   return failed;
 }
@@ -66,8 +69,9 @@ char *strcpy(char *dest, const char *src) {
 // the end of dest, and return dest.
 char *strcat(char *dest, const char *src) {
   char *destsave = dest;
-  while (*dest != 0)
+  while (*dest != 0) {
     dest++;
+  }
 
   do {
     *dest++ = *src++;

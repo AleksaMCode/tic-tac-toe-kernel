@@ -29,8 +29,9 @@ void setGame(game *ticTacToe) {
 void printBoard(const int *board) {
   monitor_write("\n");
   for (int i = 0; i < N * N; ++i) {
-    if (i != 0 && !(i % 3))
+    if (i != 0 && !(i % 3)) {
       monitor_write("\n\n");
+    }
     switch (board[i]) {
     case EMPTY:
       monitor_write("-  ");
@@ -79,9 +80,11 @@ void chooseDifficulty() {
 void askAgain() { monitor_write("\nDo you want to play again? (y\\n)\n"); }
 
 bool hasFreeSquare(const int *board) {
-  for (int i = 0; i < N * N; ++i)
-    if (board[i] == EMPTY)
+  for (int i = 0; i < N * N; ++i) {
+    if (board[i] == EMPTY) {
       return true;
+    }
+  }
   return false;
 }
 
@@ -91,9 +94,11 @@ void makeAMove(int *board, const int position, const state) {
 
 int getComputerRandomMove(const int *board) {
   int availableMoves[N * N] = {-1}, numOfAvailableMoves = 0;
-  for (int i = 0; i < N * N; ++i)
-    if (*(board + i) == EMPTY)
+  for (int i = 0; i < N * N; ++i) {
+    if (*(board + i) == EMPTY) {
       availableMoves[numOfAvailableMoves++] = i;
+    }
+  }
 
   return availableMoves[tick % numOfAvailableMoves];
 }
@@ -106,8 +111,9 @@ int win(const int *board) {
                          {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
   for (int i = 0; i < 8; ++i) {
     if (board[wins[i][0]] != 0 && board[wins[i][0]] == board[wins[i][1]] &&
-        board[wins[i][0]] == board[wins[i][2]])
+        board[wins[i][0]] == board[wins[i][2]]) {
       return board[wins[i][2]];
+    }
   }
   return 0;
 }
@@ -115,14 +121,15 @@ int win(const int *board) {
 int minimax(int *board, int player) {
   // How is the position like for player (their turn) on board?
   int winner = win(board);
-  if (winner != 0)
+  if (winner != 0) {
     return winner * player;
+  }
 
   int move = -1;
   int score = -2; // Losing moves are preferred to no move
 
-  for (int i = 0; i < N * N; ++i) // For all moves,
-    if (board[i] == EMPTY)        // If legal,
+  for (int i = 0; i < N * N; ++i) { // For all moves,
+    if (board[i] == EMPTY)          // If legal,
     {
       board[i] = player; // Try the move
       int thisScore = -minimax(board, player * -1);
@@ -132,9 +139,11 @@ int minimax(int *board, int player) {
       }                 // Pick the one that's worst for the opponent
       board[i] = EMPTY; // Reset board after try
     }
+  }
 
-  if (move == -1)
+  if (move == -1) {
     return 0;
+  }
 
   return score;
 }
@@ -142,7 +151,7 @@ int minimax(int *board, int player) {
 int getComputerMoveAI(int *board, int playerSide, int computerSide) {
   int move = -1;
   int score = -2;
-  for (int i = 0; i < N * N; ++i)
+  for (int i = 0; i < N * N; ++i) {
     if (board[i] == EMPTY) {
       board[i] = computerSide;
       int tempScore = -minimax(board, playerSide);
@@ -153,6 +162,7 @@ int getComputerMoveAI(int *board, int playerSide, int computerSide) {
         move = i;
       }
     }
+  }
 
   // Returns a score based on minimax tree at a given node.
   return move;
@@ -193,9 +203,9 @@ void winHelpFunct(game *ticTacToe, int index) {
 void gameInterrupt() {
   char answer = get_last_char();
   if (to_play) {
-    if (answer != 'y' && answer != 'n' && answer != 'Y' && answer != 'N')
+    if (answer != 'y' && answer != 'n' && answer != 'Y' && answer != 'N') {
       monitor_write("\nDo you want to play a game? (y\\n)\n");
-    else {
+    } else {
       if (answer == 'n' || answer == 'N') {
         // TODO: IMPLEMENT SHUTTING DOWN
         turnOffAll();
@@ -219,9 +229,9 @@ void gameInterrupt() {
     chooseDifficulty();
   } else if (difficulty) {
     tic_tac_toe.level = get_last_char() - '0';
-    if (tic_tac_toe.level != EASY && tic_tac_toe.level != HARD)
+    if (tic_tac_toe.level != EASY && tic_tac_toe.level != HARD) {
       chooseDifficulty();
-    else {
+    } else {
       tic_tac_toe.user[0].side = CROSS;
       tic_tac_toe.user[1].side = NOUGHT;
       printRules();
@@ -230,9 +240,9 @@ void gameInterrupt() {
     }
   } else if (!tic_tac_toe.gameOver) {
     int input = get_last_char() - '0';
-    if (input <= 0 || input >= 10)
+    if (input <= 0 || input >= 10) {
       makeMove(tic_tac_toe.user[0].name);
-    else if (input >= 1 && input <= 9 && tic_tac_toe.board[input - 1]) {
+    } else if (input >= 1 && input <= 9 && tic_tac_toe.board[input - 1]) {
       monitor_write("\nThat square is not available!\n");
       makeMove(tic_tac_toe.user[0].name);
     } else {
@@ -261,14 +271,15 @@ void gameInterrupt() {
           drawHelpFunct(&tic_tac_toe);
           play_again = 1;
           askAgain();
-        } else
+        } else {
           makeMove(tic_tac_toe.user[0].name);
+        }
       }
     }
   } else if (play_again) {
-    if (answer != 'y' && answer != 'n' && answer != 'Y' && answer != 'N')
+    if (answer != 'y' && answer != 'n' && answer != 'Y' && answer != 'N') {
       askAgain();
-    else {
+    } else {
       if (answer == 'n' || answer == 'N') {
         monitor_write("\n\n\nNumber of games played: ");
         monitor_write_dec(tic_tac_toe.totalGamesPlayed);
