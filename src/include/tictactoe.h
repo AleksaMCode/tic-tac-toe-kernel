@@ -53,4 +53,4 @@ void drawHelpFunct(game *ticTacToe);
 void winHelpFunct(game *ticTacToe, int index);
 void gameInterrupt();
 
-#endif // ! TICTACTOE_H_
+#endif  // ! TICTACTOE_H_

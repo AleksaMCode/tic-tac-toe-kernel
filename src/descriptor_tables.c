@@ -38,13 +38,13 @@ static void init_gdt() {
   gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
   gdt_ptr.base = (u32int)&gdt_entries;
 
-  gdt_set_gate(0, 0, 0, 0, 0);                // Null segment
-  gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment //1|00|1|1010
-  gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment //1|00|1|0010
+  gdt_set_gate(0, 0, 0, 0, 0);                 // Null segment
+  gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);  // Code segment //1|00|1|1010
+  gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);  // Data segment //1|00|1|0010
   gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA,
-               0xCF); // User mode code segment //1|11|1|1010
+               0xCF);  // User mode code segment //1|11|1|1010
   gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2,
-               0xCF); // User mode data segment 0xCF -> 1|1|0|0|1111
+               0xCF);  // User mode data segment 0xCF -> 1|1|0|0|1111
 
   gdt_flush((u32int)&gdt_ptr);
 }

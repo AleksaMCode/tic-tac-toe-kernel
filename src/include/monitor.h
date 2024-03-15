@@ -13,4 +13,4 @@ void monitor_write_valn(char c, int n);
 char get_last_char();
 char *get_current_line();
 
-#endif // MONITOR_H
+#endif  // MONITOR_H

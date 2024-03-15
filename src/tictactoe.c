@@ -34,15 +34,15 @@ void printBoard(const int *board) {
       monitor_write("\n\n");
     }
     switch (board[i]) {
-    case EMPTY:
-      monitor_write("-  ");
-      break;
-    case CROSS:
-      monitor_write("x  ");
-      break;
-    case NOUGHT:
-      monitor_write("o  ");
-      break;
+      case EMPTY:
+        monitor_write("-  ");
+        break;
+      case CROSS:
+        monitor_write("x  ");
+        break;
+      case NOUGHT:
+        monitor_write("o  ");
+        break;
     }
   }
   monitor_write("\n");
@@ -70,8 +70,9 @@ void enterUsername() { monitor_write("\n\nPlease enter your username.\n"); }
 
 void printRules() {
   monitor_clear();
-  monitor_write("Place a cross/nought by entering appropriate number.\n1 2 "
-                "3\n\n4 5 6\n\n7 8 9\n");
+  monitor_write(
+      "Place a cross/nought by entering appropriate number.\n1 2 "
+      "3\n\n4 5 6\n\n7 8 9\n");
 }
 
 void chooseDifficulty() {
@@ -127,17 +128,17 @@ int minimax(int *board, int player) {
   }
 
   int move = -1;
-  int score = -2; // Losing moves are preferred to no move
+  int score = -2;  // Losing moves are preferred to no move
 
-  for (int i = 0; i < N * N; ++i) { // For all moves,
-    if (board[i] == EMPTY) {        // If legal,
-      board[i] = player;            // Try the move
+  for (int i = 0; i < N * N; ++i) {  // For all moves,
+    if (board[i] == EMPTY) {         // If legal,
+      board[i] = player;             // Try the move
       int thisScore = -minimax(board, player * -1);
       if (thisScore > score) {
         score = thisScore;
         move = i;
-      }                 // Pick the one that's worst for the opponent
-      board[i] = EMPTY; // Reset board after try
+      }                  // Pick the one that's worst for the opponent
+      board[i] = EMPTY;  // Reset board after try
     }
   }
 
