@@ -8,8 +8,9 @@ int difficulty = 0;
 int play_again = 0;
 
 void initializeBoard(int *board) {
-  for (int i = 0; i < N * N; ++i)
+  for (int i = 0; i < N * N; ++i) {
     board[i] = EMPTY;
+  }
 }
 
 void turnOffAll() {
@@ -129,9 +130,8 @@ int minimax(int *board, int player) {
   int score = -2; // Losing moves are preferred to no move
 
   for (int i = 0; i < N * N; ++i) { // For all moves,
-    if (board[i] == EMPTY)          // If legal,
-    {
-      board[i] = player; // Try the move
+    if (board[i] == EMPTY) {        // If legal,
+      board[i] = player;            // Try the move
       int thisScore = -minimax(board, player * -1);
       if (thisScore > score) {
         score = thisScore;
@@ -173,11 +173,13 @@ bool isThereAWinner(const int *board, int side) {
   int winningCombos[8 * 3] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 3, 6,
                               1, 4, 7, 2, 5, 8, 0, 4, 8, 2, 4, 6};
 
-  for (int i = 0; i <= 24 - 3; i += 3)
+  for (int i = 0; i <= 24 - 3; i += 3) {
     if (board[winningCombos[i]] == side &&
         board[winningCombos[i + 1]] == side &&
-        board[winningCombos[i + 2]] == side)
+        board[winningCombos[i + 2]] == side) {
       return true;
+    }
+  }
 
   return false;
 }
