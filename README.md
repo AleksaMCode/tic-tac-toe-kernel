@@ -196,9 +196,10 @@ Alternatively, you could mount the ISO image to a Virtual Machine.
 <ul>
   <li><p align="justify"><a href="https://wiki.osdev.org/Main_Page">osdev.org wiki</a></p></li>
   <li><p align="justify"><a href="https://0xax.gitbooks.io/linux-insides/content/KernelStructures/linux-kernelstructure-1.html">Kernel Structures</a></p></li>
+  <li><p align="justify"><a href="https://wiki.osdev.org/GCC_Cross_Compiler">GCC Cross-Compiler</a></p></li>
   <li><p align="justify"><a href="https://en.wikibooks.org/wiki/X86_Assembly/X86_Architecture">x86 Assembly/X86 Architecture</a></p></li>
-  <li><p align="justify"><a href="https://www.youtube.com/watch?v=nnL_Lv19hdw">OSDev.org Tutorial: Build an i686-elf Cross Compiler under 64-bit Ubuntu Desktop 16.04.1 </a></p></li>
-
+  <li><p align="justify"><a href="https://forum.osdev.org/viewtopic.php?f=8&t=30812">Expected errors while building a cross compiler</a></p></li>
+  <li><p align="justify"><a href="https://www.youtube.com/watch?v=nnL_Lv19hdw">OSDev.org Tutorial: Build an i686-elf Cross Compiler under 64-bit Ubuntu Desktop 16.04.1</a></p></li>
 </ul>
 
 ## Screenshots
