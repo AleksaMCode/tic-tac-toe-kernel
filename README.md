@@ -61,7 +61,7 @@ class="center"
 
 ### Data Structures and Game State
 
-<p align="justify">The board is represented as a flat 9-element integer array (<code>board[N * N]</code> with <code>N = 3</code>). Each cell can be <code>EMPTY</code> (0), <code>CROSS</code> (-1), or <code>NOUGHT</code> (1). The <code>game</code> struct holds the board, difficulty level, two <code>player</code> entries (user and computer), game-over flag, winner, and statistics (total games, draws, wins). Two difficulty levels are available: <code>EASY</code>, where the computer plays a random available move, and <code>HARD</code>, where the computer uses the minimax algorithm and is unbeatable.</p>
+<p align="justify">The board is represented as a flat 9-element integer array (<code>board[N * N]</code> with <code>N = 3</code>). Each cell can be <code>EMPTY</code> (0), <code>CROSS</code> (-1), or <code>NOUGHT</code> (1). The <code>game</code> struct holds the board, difficulty level, two <code>player</code> entries (user and computer), game-over flag, winner, and statistics (total games, draws, wins). Two difficulty levels are available: <code>EASY</code>, where the computer plays a next available move, and <code>HARD</code>, where the computer uses the minimax algorithm and is unbeatable.</p>
 
 ### Game Flow
 
@@ -76,6 +76,8 @@ class="center"
     <ul>
       <li><b>1</b> - play another game (keeps current scoreboard)</li>
       <li><b>2</b> - reset scoreboard and play another game (keeps username and difficulty)</li>
+      <li><b>3</b> - show cumulative scoreboard and return to menu</li>
+      <li><b>4</b> - show final scoreboard and shutdown the VM</li>
     </ul>
   </li>
 </ol>
