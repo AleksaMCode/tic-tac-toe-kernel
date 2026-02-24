@@ -1,8 +1,10 @@
 <img width="150" align="right" title="cpu icon" src="./resources/tic-tac-toe.png" alt_text="[Tic Tac Toe icons created by Freepik - Flaticon](https://www.flaticon.com/premium-icon/tic-tac-toe_3401145)"></img>
 
 # Tic Tac Toe Kernel
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Code style: ClangFormat](https://img.shields.io/badge/code%20style-ClangFormat-2596be.svg)](https://clang.llvm.org/docs/ClangFormat.html)
 ![](https://img.shields.io/github/v/release/AleksaMCode/tic-tac-toe-kernel)
-[![Code style: black](https://img.shields.io/badge/code%20style-ClangFormat-2596be.svg)](https://clang.llvm.org/docs/ClangFormat.html)
+![C tests](https://github.com/AleksaMCode/tic-tac-toe-kernel/actions/workflows/tests.yml/badge.svg?branch=main)
 
 
 <p align="justify"><b>Tic Tac Toe Kernel</b> is a project I created with <a href="https://github.com/Valyreon">Valyreon</a> in June of 2018, that has helped us gain better understanding of Kernel development. It provides users with an opportunity to engage in a game of Tic Tac Toe against the Kernel at two different difficulty levels: easy and hard. At the hard level, the Kernel is impossible to beat, making the best case scenario a draw game, while the easy level is made in such a way that the Kernel is playing the first free board space, thus making it easy to gain a win over the Kernel.</p>
