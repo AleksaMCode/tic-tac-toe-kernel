@@ -72,6 +72,12 @@ class="center"
   <li>Username entry</li>
   <li>Difficulty selection (1 or 2)</li>
   <li>Alternating moves</li>
+  <li>Post-game menu:
+    <ul>
+      <li><b>1</b> - play another game (keeps current scoreboard)</li>
+      <li><b>2</b> - reset scoreboard and play another game (keeps username and difficulty)</li>
+    </ul>
+  </li>
 </ol>
 
 <p align="justify">The user enters 1–9 to place a mark in the corresponding cell (1–3 top row, 4–6 middle, 7–9 bottom). After each move, win and draw conditions are checked. If the game continues, the computer responds according to the chosen difficulty.</p>
@@ -207,7 +213,7 @@ This will produce a binary file `kernel.bin`.
 <p align="justify">To create a bootable image, run in the following commands:</p>
 
 ```bash
-mv kernel.bin isodir/boot/kernel.bin
+mv ./src/kernel.bin isodir/boot/kernel.bin
 grub-mkrescue -o KernelXO.iso isodir
 ```
 
