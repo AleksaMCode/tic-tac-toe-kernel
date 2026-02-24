@@ -39,8 +39,9 @@ void chooseDifficulty();
 void renderEndMenu();
 void resetScoreboard(game *ticTacToe);
 void printScoreboard(const game *ticTacToe);
+void shutdown();
 bool hasFreeSquare(const int *board);
-void makeAMove(int *board, const int position, const state);
+void makeAMove(int *board, const int position, const enum state state);
 int getHumanMove(const int *board, const char *name);
 int getComputerRandomMove(const int *board);
 /* -minmax- */

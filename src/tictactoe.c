@@ -83,7 +83,9 @@ void renderEndMenu() {
   monitor_write("\nWhat would you like to do next?\n");
   monitor_write("1) Play another game\n");
   monitor_write("2) Reset scoreboard and play another game\n");
-  monitor_write("(1 or 2)\n");
+  monitor_write("3) Show scoreboard\n");
+  monitor_write("4) Quit and shutdown\n");
+  monitor_write("(1, 2, 3 or 4)\n");
 }
 
 void resetScoreboard(game *ticTacToe) {
@@ -129,7 +131,7 @@ bool hasFreeSquare(const int *board) {
   return false;
 }
 
-void makeAMove(int *board, const int position, const state) {
+void makeAMove(int *board, const int position, const enum state state) {
   board[position] = state;
 }
 
@@ -317,13 +319,19 @@ void gameInterrupt() {
       }
     }
   } else if (play_again) {
-    if (answer != '1' && answer != '2') {
+    if (answer != '1' && answer != '2' && answer != '3' && answer != '4') {
       renderEndMenu();
     } else {
       if (answer == '2') {
         resetScoreboard(&tic_tac_toe);
         monitor_write("\nScoreboard has been reset.\n");
         printScoreboard(&tic_tac_toe);
+      } else if (answer == '3') {
+        printScoreboard(&tic_tac_toe);
+        renderEndMenu();
+        return;
+      } else if (answer == '4') {
+        shutdown();
       }
       setGame(&tic_tac_toe);
       monitor_clear();
