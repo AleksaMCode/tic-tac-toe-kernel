@@ -13,14 +13,6 @@ void initializeBoard(int *board) {
   }
 }
 
-void turnOffAll() {
-  to_play = 0;
-  enter_username = 0;
-  difficulty = 0;
-  play_again = 0;
-  tic_tac_toe.gameOver = true;
-}
-
 void setGame(game *ticTacToe) {
   initializeBoard(ticTacToe->board);
   ticTacToe->gameOver = false;
@@ -251,8 +243,8 @@ void gameInterrupt() {
       monitor_write("\nDo you want to play a game? (y\\n)\n");
     } else {
       if (answer == 'n' || answer == 'N') {
-        // TODO: IMPLEMENT SHUTTING DOWN
-        turnOffAll();
+        monitor_write("\nShutting down...\n");
+        shutdown();
       } else {
         setGame(&tic_tac_toe);
         player pl = {"Computer", EMPTY, 0};
