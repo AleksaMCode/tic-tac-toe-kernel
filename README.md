@@ -17,7 +17,7 @@ width="70%"
 class="center"
 />
 <p align="center">
-    <label><b>Tic Tac Toe Kernel</b> <i>easy</i> gameplay running on Oracle VM VirtualBox</label>
+    <label><b>Tic Tac Toe Kernel</b> (<code>v0.1.0</code>) <i>easy</i> gameplay running on Oracle VM VirtualBox</label>
 </p>
 </p>
 
