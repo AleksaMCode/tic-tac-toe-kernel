@@ -109,6 +109,17 @@ void printScoreboard(const game *ticTacToe) {
   monitor_write("\n");
 }
 
+void shutdown() {
+  asm volatile("cli");
+  // QEMU/Bochs compatible ACPI poweroff ports.
+  outw(0x604, 0x2000);
+  outw(0xB004, 0x2000);
+  outw(0x4004, 0x3400);
+  for (;;) {
+    asm volatile("hlt");
+  }
+}
+
 bool hasFreeSquare(const int *board) {
   for (int i = 0; i < N * N; ++i) {
     if (board[i] == EMPTY) {
