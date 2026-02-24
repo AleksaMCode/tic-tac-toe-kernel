@@ -56,13 +56,48 @@ class="center"
 <p align="justify">To compile and run this code you will need Linux, <a href="https://www.nasm.us/">GCC</a>, LD, GNU MAKE, <a href="https://www.nasm.us/">NASM</a> and <a href="https://www.google.com/search?client=firefox-b-d&q=QEMU">QEMU</a>. In order to fully understand everything that is written in this project, you will need to have a very good knowledge of C and a pretty good understanding of <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjitorE8Zz7AhXOxQIHHQ_RDHAQFnoECA4QAQ&url=https%3A%2F%2Fwww.intel.com%2Fcontent%2Fdam%2Fdevelop%2Fexternal%2Fus%2Fen%2Fdocuments%2Fintroduction-to-x64-assembly-181178.pdf&usg=AOvVaw2-KElAcG1rRPsv5rHn3UMw">assembly</a> (Intel syntax) as well as some basic knowledge of registers. Knowledge of Linux will be very helpful as the scripts and tutorial is tailor for it.</p>
 
 ## Tic Tac Toe Gameplay
-...
+
+<p align="justify">The Tic Tac Toe game logic is implemented in C within <code>src/tictactoe.c</code> and declared in <code>src/include/tictactoe.h</code>. The game runs inside the kernel and uses the monitor for text output and the keyboard interrupt handler for user input.</p>
+
+### Data Structures and Game State
+
+<p align="justify">The board is represented as a flat 9-element integer array (<code>board[N * N]</code> with <code>N = 3</code>). Each cell can be <code>EMPTY</code> (0), <code>CROSS</code> (-1), or <code>NOUGHT</code> (1). The <code>game</code> struct holds the board, difficulty level, two <code>player</code> entries (user and computer), game-over flag, winner, and statistics (total games, draws, wins). Two difficulty levels are available: <code>EASY</code>, where the computer plays a random available move, and <code>HARD</code>, where the computer uses the minimax algorithm and is unbeatable.</p>
+
+### Game Flow
+
+<p align="justify">Input is handled via <code>gameInterrupt()</code>, which reacts to keyboard interrupts. The flow proceeds as:</p>
+
+<ol>
+  <li>Welcome prompt (y/n)</li>
+  <li>Username entry</li>
+  <li>Difficulty selection (1 or 2)</li>
+  <li>Alternating moves</li>
+</ol>
+
+<p align="justify">The user enters 1–9 to place a mark in the corresponding cell (1–3 top row, 4–6 middle, 7–9 bottom). After each move, win and draw conditions are checked. If the game continues, the computer responds according to the chosen difficulty.</p>
+
+### Win Detection
+
+<p align="justify">Eight winning combinations are checked: three rows, three columns, and two diagonals. The <code>win()</code> function used by minimax returns the winning player’s value (1 or -1) or 0 if no winner. <code>isThereAWinner()</code> is used during gameplay to detect a win for a given side. A draw occurs when no one has won and <code>hasFreeSquare()</code> returns false.</p>
+
+### Minimax Algorithm
+
+<p align="justify">On <b>HARD</b> difficulty, the computer uses the <a href="https://en.wikipedia.org/wiki/Minimax">minimax</a> algorithm to choose optimal moves. The implementation is an exhaustive tree search over all possible positions.</p>
+
+<p align="justify"><b><code>win(board)</code></b> — Checks if the position is terminal. Evaluates all eight lines (rows, columns, diagonals). Returns the winner’s value (1 for <code>NOUGHT</code>, -1 for <code>CROSS</code>) or 0 if nobody has won.</p>
+
+<p align="justify"><b><code>minimax(board, player)</code></b> — Evaluates how good the position is for <code>player</code> (1 or -1) on their turn. If the game is over (<code>win(board) != 0</code>), it returns <code>winner × player</code> so that a win for the current player is positive and a loss is negative. Otherwise, it iterates over all empty cells, tries each move, recursively calls <code>minimax(board, -player)</code> (alternating turns), and negates the result. This is the <a href="https://en.wikipedia.org/wiki/Negamax">negamax</a> formulation: both sides maximize from their own viewpoint, so the score is negated when switching players. The best score for the current player is chosen; if no legal moves exist (draw), it returns 0.</p>
+
+<p align="justify"><b><code>getComputerMoveAI(board, playerSide, computerSide)</code></b> — Chooses the computer’s move. For each empty cell, it temporarily places the computer’s mark, calls <code>-minimax(board, playerSide)</code> to get the score from the computer’s perspective (negated from the player’s evaluation), undoes the move, and selects the cell with the highest score. This yields the move that minimizes the player’s best outcome and makes the computer unbeatable.</p>
+
+<p align="justify">Because the entire game tree for 3×3 Tic Tac Toe is small, minimax explores all branches to terminal states.</p>
 
 ## Kernel
 ### Link file
 <p align="justify">This file tells LD (GNU Linker) how to set up our kernel image. For more information about the LD check out this <a href="https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html">link</a>. Firstly, it tells that the start location of our binary should be the symbol <i>start</i>. The <b><a href="https://en.wikipedia.org/wiki/Code_segment">.text</a></b> section, the place where our code goes, should be first and should start at 0x100000 or 1 MB. The <b><a href="https://en.wikipedia.org/wiki/Data_segment">.data</a></b> section should be next, followed by the <b><a href="https://en.wikipedia.org/wiki/.bss">.bss</a></b> section, while each should be page-aligned with <code>ALIGN(4K)</code>.</p>
 
-> **Note**: The linker script specifies *start* as the entry point to the kernel and the bootloader will jump to this position once the kernel has been loaded.
+> [!NOTE]
+> The linker script specifies *start* as the entry point to the kernel and the bootloader will jump to this position once the kernel has been loaded.
 
 ### Boot code
 <p align="justify">To start your OS we will an existing piece of software to load it. This is called <a href="https://en.wikipedia.org/wiki/Bootloader">bootloader</a> and we have used <a href="https://www.gnu.org/software/grub/">GRUB</a> as the goal of this project wasn't to develop our own bootloader. Unless you really want to develop a bootloader, I recommend using one of the already available bootloaders. The <i>boot.s</i> is a Kernel start location which also defines multiboot header. Multiboot Standard describes an interface between the bootloader and the OS kernel, so we don't have to worry about that. It works by putting some magic values in some global variables inside the multiboot header.</p>
@@ -213,9 +248,3 @@ Here are some kernel screenshots:
 <p align="center">
     <label><b>Tic Tac Toe Kernel</b> running using QEMU</label>
 </p>
-
-## To-Do List
-- [ ] Complete the `README.md`
-- [ ] Implement shutdown
-- [ ] Implement score restart
-- [ ] Implement gameplay restart
