@@ -37,8 +37,8 @@ class="center"
       - [The Global Descriptor Table](#the-global-descriptor-table)
       - [The Interrupt Descriptor Table](#the-interrupt-descriptor-table)
     - [Booting the kernel](#booting-the-kernel)
-      - [Build a binary file](#build-a-binary-file)
-      - [Building a bootable image](#building-a-bootable-image)
+      - [Using the Makefile](#using-the-makefile)
+      - [Manual build](#manual-build)
     - [OS testing](#os-testing)
   - [References](#references)
     - [Books](#books)
@@ -203,20 +203,31 @@ Like the GDT the IDT is an array of 8-byte descriptors. Unlike the GDT the first
 ### Booting the kernel
 <p align="justify">If you don't want to build your own bootable image, download the latest <a href="https://github.com/AleksaMCode/tic-tac-toe-kernel/releases">release</a> of the Kernel and head over to <a href="#os-testing">OS testing section</a>.</p>
 
-#### Build a binary file
+#### Using the Makefile
+<p align="justify">The simplest way to build and run this project is through the root <code>Makefile</code>.</p>
+
+```bash
+make          # Build kernel.bin and KernelXO.iso
+make run      # Build and run in QEMU
+make kernel   # Build only kernel.bin
+make iso      # Build kernel.bin + bootable ISO
+make format   # Format C/H files in src/ with clang-format (Google style)
+make clean    # Remove build artifacts
+```
+
+#### Manual build
 <p align="justify">Move the <code>build.sh</code> file to a <code>src/</code> directory and then simply run the build script as:</p>
 
 ```bash
 sh ./src/build.sh
 ```
 This will produce a binary file `kernel.bin`.
-
-#### Building a bootable image
-<p align="justify">You can create a bootable image containing the <a href="https://www.gnu.org/software/grub/">GRUB bootloader</a> and your kernel using the program <a href="https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dmkrescue.html"><b>grub-mkrescue</b></a>.</p>
+<p align="justify">After, you can create a bootable image containing the <a href="https://www.gnu.org/software/grub/">GRUB bootloader</a> and your kernel using the program <a href="https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dmkrescue.html"><b>grub-mkrescue</b></a>.</p>
 
 <p align="justify">To create a bootable image, run in the following commands:</p>
 
 ```bash
+sh ./src/build.sh
 mv ./src/kernel.bin isodir/boot/kernel.bin
 grub-mkrescue -o KernelXO.iso isodir
 ```
