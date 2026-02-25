@@ -13,14 +13,6 @@ void initializeBoard(int *board) {
   }
 }
 
-void turnOffAll() {
-  to_play = 0;
-  enter_username = 0;
-  difficulty = 0;
-  play_again = 0;
-  tic_tac_toe.gameOver = true;
-}
-
 void setGame(game *ticTacToe) {
   initializeBoard(ticTacToe->board);
   ticTacToe->gameOver = false;
@@ -79,7 +71,48 @@ void chooseDifficulty() {
   monitor_write("\nWhat level do you want?\n1) EASY\n2) HARD\n(1 or 2)\n");
 }
 
-void askAgain() { monitor_write("\nDo you want to play again? (y\\n)\n"); }
+void renderEndMenu() {
+  monitor_write("\nWhat would you like to do next?\n");
+  monitor_write("1) Play another game\n");
+  monitor_write("2) Reset scoreboard and play another game\n");
+  monitor_write("3) Show scoreboard\n");
+  monitor_write("4) Quit and shutdown\n");
+  monitor_write("(1, 2, 3 or 4)\n");
+}
+
+void resetScoreboard(game *ticTacToe) {
+  ticTacToe->totalGamesPlayed = 0;
+  ticTacToe->totalDraws = 0;
+  ticTacToe->user[0].numbereOfWins = 0;
+  ticTacToe->user[1].numbereOfWins = 0;
+}
+
+void printScoreboard(const game *ticTacToe) {
+  monitor_write("\nNumber of games played: ");
+  monitor_write_dec(ticTacToe->totalGamesPlayed);
+  monitor_write("\nNumber of wins for ");
+  monitor_write(ticTacToe->user[0].name);
+  monitor_write(": ");
+  monitor_write_dec(ticTacToe->user[0].numbereOfWins);
+  monitor_write("\nNumber of wins for ");
+  monitor_write(ticTacToe->user[1].name);
+  monitor_write(": ");
+  monitor_write_dec(ticTacToe->user[1].numbereOfWins);
+  monitor_write("\nNumber of draws: ");
+  monitor_write_dec(ticTacToe->totalDraws);
+  monitor_write("\n");
+}
+
+void shutdown() {
+  asm volatile("cli");
+  // QEMU/Bochs compatible ACPI poweroff ports.
+  outw(0x604, 0x2000);
+  outw(0xB004, 0x2000);
+  outw(0x4004, 0x3400);
+  for (;;) {
+    asm volatile("hlt");
+  }
+}
 
 bool hasFreeSquare(const int *board) {
   for (int i = 0; i < N * N; ++i) {
@@ -90,7 +123,7 @@ bool hasFreeSquare(const int *board) {
   return false;
 }
 
-void makeAMove(int *board, const int position, const state) {
+void makeAMove(int *board, const int position, const enum state state) {
   board[position] = state;
 }
 
@@ -137,7 +170,7 @@ int minimax(int *board, int player) {
       if (thisScore > score) {
         score = thisScore;
         move = i;
-      }                  // Pick the one that's worst for the opponent
+      }  // Pick the one that's worst for the opponent
       board[i] = EMPTY;  // Reset board after try
     }
   }
@@ -210,15 +243,13 @@ void gameInterrupt() {
       monitor_write("\nDo you want to play a game? (y\\n)\n");
     } else {
       if (answer == 'n' || answer == 'N') {
-        // TODO: IMPLEMENT SHUTTING DOWN
-        turnOffAll();
+        monitor_write("\nShutting down...\n");
+        shutdown();
       } else {
         setGame(&tic_tac_toe);
         player pl = {"Computer", EMPTY, 0};
         tic_tac_toe.user[0] = tic_tac_toe.user[1] = pl;
-        tic_tac_toe.totalGamesPlayed = 0;
-        tic_tac_toe.user[0].numbereOfWins = tic_tac_toe.user[1].numbereOfWins =
-            tic_tac_toe.totalDraws = 0;
+        resetScoreboard(&tic_tac_toe);
         enter_username = 1;
         to_play = 0;
         enterUsername();
@@ -254,11 +285,11 @@ void gameInterrupt() {
       if (isThereAWinner(tic_tac_toe.board, tic_tac_toe.user[0].side)) {
         winHelpFunct(&tic_tac_toe, 0);
         play_again = 1;
-        askAgain();
+        renderEndMenu();
       } else if (!hasFreeSquare(tic_tac_toe.board)) {
         drawHelpFunct(&tic_tac_toe);
         play_again = 1;
-        askAgain();
+        renderEndMenu();
       }
       if (!tic_tac_toe.gameOver) {
         printBoard(tic_tac_toe.board);
@@ -269,42 +300,35 @@ void gameInterrupt() {
         if (isThereAWinner(tic_tac_toe.board, tic_tac_toe.user[1].side)) {
           winHelpFunct(&tic_tac_toe, 1);
           play_again = 1;
-          askAgain();
+          renderEndMenu();
         } else if (!hasFreeSquare(tic_tac_toe.board)) {
           drawHelpFunct(&tic_tac_toe);
           play_again = 1;
-          askAgain();
+          renderEndMenu();
         } else {
           makeMove(tic_tac_toe.user[0].name);
         }
       }
     }
   } else if (play_again) {
-    if (answer != 'y' && answer != 'n' && answer != 'Y' && answer != 'N') {
-      askAgain();
+    if (answer != '1' && answer != '2' && answer != '3' && answer != '4') {
+      renderEndMenu();
     } else {
-      if (answer == 'n' || answer == 'N') {
-        monitor_write("\n\n\nNumber of games played: ");
-        monitor_write_dec(tic_tac_toe.totalGamesPlayed);
-        monitor_write("\nNumber of wins for ");
-        monitor_write(tic_tac_toe.user[0].name);
-        monitor_write(": ");
-        monitor_write_dec(tic_tac_toe.user[0].numbereOfWins);
-        monitor_write("\nNumber of wins for ");
-        monitor_write(tic_tac_toe.user[1].name);
-        monitor_write(": ");
-        monitor_write_dec(tic_tac_toe.user[1].numbereOfWins);
-        monitor_write("\nNumber of draws: ");
-        monitor_write_dec(tic_tac_toe.totalDraws);
-        monitor_write("\n");
-        // TODO: IMPLEMENT SHUTTING DOWN
-        turnOffAll();
-      } else {
-        setGame(&tic_tac_toe);
-        monitor_clear();
-        tic_tac_toe.winner = DRAW;
-        makeMove(tic_tac_toe.user[0].name);
+      if (answer == '2') {
+        resetScoreboard(&tic_tac_toe);
+        monitor_write("\nScoreboard has been reset.\n");
+        printScoreboard(&tic_tac_toe);
+      } else if (answer == '3') {
+        printScoreboard(&tic_tac_toe);
+        renderEndMenu();
+        return;
+      } else if (answer == '4') {
+        shutdown();
       }
+      setGame(&tic_tac_toe);
+      monitor_clear();
+      tic_tac_toe.winner = DRAW;
+      makeMove(tic_tac_toe.user[0].name);
     }
   }
 }

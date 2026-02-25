@@ -1,8 +1,10 @@
 <img width="150" align="right" title="cpu icon" src="./resources/tic-tac-toe.png" alt_text="[Tic Tac Toe icons created by Freepik - Flaticon](https://www.flaticon.com/premium-icon/tic-tac-toe_3401145)"></img>
 
 # Tic Tac Toe Kernel
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Code style: ClangFormat](https://img.shields.io/badge/code%20style-ClangFormat-2596be.svg)](https://clang.llvm.org/docs/ClangFormat.html)
 ![](https://img.shields.io/github/v/release/AleksaMCode/tic-tac-toe-kernel)
-[![Code style: black](https://img.shields.io/badge/code%20style-ClangFormat-2596be.svg)](https://clang.llvm.org/docs/ClangFormat.html)
+![C tests](https://github.com/AleksaMCode/tic-tac-toe-kernel/actions/workflows/tests.yml/badge.svg?branch=main)
 
 
 <p align="justify"><b>Tic Tac Toe Kernel</b> is a project I created with <a href="https://github.com/Valyreon">Valyreon</a> in June of 2018, that has helped us gain better understanding of Kernel development. It provides users with an opportunity to engage in a game of Tic Tac Toe against the Kernel at two different difficulty levels: easy and hard. At the hard level, the Kernel is impossible to beat, making the best case scenario a draw game, while the easy level is made in such a way that the Kernel is playing the first free board space, thus making it easy to gain a win over the Kernel.</p>
@@ -15,7 +17,7 @@ width="70%"
 class="center"
 />
 <p align="center">
-    <label><b>Tic Tac Toe Kernel</b> <i>easy</i> gameplay running on Oracle VM VirtualBox</label>
+    <label><b>Tic Tac Toe Kernel</b> (<code>v0.1.0</code>) <i>easy</i> gameplay running on Oracle VM VirtualBox</label>
 </p>
 </p>
 
@@ -35,8 +37,8 @@ class="center"
       - [The Global Descriptor Table](#the-global-descriptor-table)
       - [The Interrupt Descriptor Table](#the-interrupt-descriptor-table)
     - [Booting the kernel](#booting-the-kernel)
-      - [Build a binary file](#build-a-binary-file)
-      - [Building a bootable image](#building-a-bootable-image)
+      - [Using the Makefile](#using-the-makefile)
+      - [Manual build](#manual-build)
     - [OS testing](#os-testing)
   - [References](#references)
     - [Books](#books)
@@ -61,7 +63,7 @@ class="center"
 
 ### Data Structures and Game State
 
-<p align="justify">The board is represented as a flat 9-element integer array (<code>board[N * N]</code> with <code>N = 3</code>). Each cell can be <code>EMPTY</code> (0), <code>CROSS</code> (-1), or <code>NOUGHT</code> (1). The <code>game</code> struct holds the board, difficulty level, two <code>player</code> entries (user and computer), game-over flag, winner, and statistics (total games, draws, wins). Two difficulty levels are available: <code>EASY</code>, where the computer plays a random available move, and <code>HARD</code>, where the computer uses the minimax algorithm and is unbeatable.</p>
+<p align="justify">The board is represented as a flat 9-element integer array (<code>board[N * N]</code> with <code>N = 3</code>). Each cell can be <code>EMPTY</code> (0), <code>CROSS</code> (-1), or <code>NOUGHT</code> (1). The <code>game</code> struct holds the board, difficulty level, two <code>player</code> entries (user and computer), game-over flag, winner, and statistics (total games, draws, wins). Two difficulty levels are available: <code>EASY</code>, where the computer plays a next available move, and <code>HARD</code>, where the computer uses the minimax algorithm and is unbeatable.</p>
 
 ### Game Flow
 
@@ -72,6 +74,14 @@ class="center"
   <li>Username entry</li>
   <li>Difficulty selection (1 or 2)</li>
   <li>Alternating moves</li>
+  <li>Post-game menu:
+    <ul>
+      <li><b>1</b> - play another game (keeps current scoreboard)</li>
+      <li><b>2</b> - reset scoreboard and play another game (keeps username and difficulty)</li>
+      <li><b>3</b> - show cumulative scoreboard and return to menu</li>
+      <li><b>4</b> - show final scoreboard and shutdown the VM</li>
+    </ul>
+  </li>
 </ol>
 
 <p align="justify">The user enters 1–9 to place a mark in the corresponding cell (1–3 top row, 4–6 middle, 7–9 bottom). After each move, win and draw conditions are checked. If the game continues, the computer responds according to the chosen difficulty.</p>
@@ -193,21 +203,32 @@ Like the GDT the IDT is an array of 8-byte descriptors. Unlike the GDT the first
 ### Booting the kernel
 <p align="justify">If you don't want to build your own bootable image, download the latest <a href="https://github.com/AleksaMCode/tic-tac-toe-kernel/releases">release</a> of the Kernel and head over to <a href="#os-testing">OS testing section</a>.</p>
 
-#### Build a binary file
+#### Using the Makefile
+<p align="justify">The simplest way to build and run this project is through the root <code>Makefile</code>.</p>
+
+```bash
+make          # Build kernel.bin and KernelXO.iso
+make run      # Build and run in QEMU
+make kernel   # Build only kernel.bin
+make iso      # Build kernel.bin + bootable ISO
+make format   # Format C/H files in src/ with clang-format (Google style)
+make clean    # Remove build artifacts
+```
+
+#### Manual build
 <p align="justify">Move the <code>build.sh</code> file to a <code>src/</code> directory and then simply run the build script as:</p>
 
 ```bash
 sh ./src/build.sh
 ```
 This will produce a binary file `kernel.bin`.
-
-#### Building a bootable image
-<p align="justify">You can create a bootable image containing the <a href="https://www.gnu.org/software/grub/">GRUB bootloader</a> and your kernel using the program <a href="https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dmkrescue.html"><b>grub-mkrescue</b></a>.</p>
+<p align="justify">After, you can create a bootable image containing the <a href="https://www.gnu.org/software/grub/">GRUB bootloader</a> and your kernel using the program <a href="https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dmkrescue.html"><b>grub-mkrescue</b></a>.</p>
 
 <p align="justify">To create a bootable image, run in the following commands:</p>
 
 ```bash
-mv kernel.bin isodir/boot/kernel.bin
+sh ./src/build.sh
+mv ./src/kernel.bin isodir/boot/kernel.bin
 grub-mkrescue -o KernelXO.iso isodir
 ```
 
