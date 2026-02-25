@@ -211,7 +211,6 @@ make          # Build kernel.bin and KernelXO.iso
 make run      # Build and run in QEMU
 make kernel   # Build only kernel.bin
 make iso      # Build kernel.bin + bootable ISO
-make format   # Format C/H files in src/ with clang-format (Google style)
 make clean    # Remove build artifacts
 ```
 
